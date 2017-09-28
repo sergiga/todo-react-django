@@ -1,0 +1,5 @@
+-e git+https://github.com/django/django.git@45cd53eee8ca98d4e22adb727151c32a416fe175#egg=Django
+django-filter==1.0.4
+djangorestframework==3.6.4
+mysqlclient==1.3.12
+pytz==2017.2
