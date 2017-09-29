@@ -1,6 +1,7 @@
 from todos.models import Todo
 from django.contrib.auth.models import User
 from todos.serializers import TodoSerializer, UserSerializer
+from todos.permissions import IsOwnerOrReadOnly
 from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -8,7 +9,8 @@ from rest_framework import status
 from rest_framework import permissions
 
 class TodoList(APIView):
-  permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+  permission_classes = (permissions.IsAuthenticatedOrReadOnly,
+                        IsOwnerOrReadOnly)
 
   def get(self, request, format=None):
     todos = Todo.objects.all()
@@ -23,8 +25,9 @@ class TodoList(APIView):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class TodoDetail(APIView):
-  permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
-  
+  permission_classes = (permissions.IsAuthenticatedOrReadOnly,
+                        IsOwnerOrReadOnly)
+
   def get_object(self, pk):
     try:
       return Todo.objects.get(pk=pk)
