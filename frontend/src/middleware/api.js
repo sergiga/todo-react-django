@@ -3,7 +3,13 @@ import axios from 'axios';
 import omit from 'lodash/omit';
 import merge from 'lodash/merge';
 
-// API call
+// API calls
+export const Methods = {
+  GET: 'GET',
+  POST: 'POST',
+  PUT: 'PUT',
+  DELETE: 'DELETE'
+};
 const API_ROOT = 'http://localhost/8000/';
 const callApi = (endpoint, query, schema) => {
   const fullUrl = (endpoint.indexOf(API_ROOT) === -1) 
@@ -25,7 +31,7 @@ const todo = new schema.Entity('todos', {}, {
 export const Schemas = {
   TODO: todo,
   TODO_ARRAY: [ todo ]
-}
+};
 
 // Redux middleware
 export const API_MIDDLEWARE = 'API_MIDDLEWARE';
@@ -75,4 +81,4 @@ export default store => next => action => {
       error: error.message || 'Something bad happened'
     }))
   );
-}
+};
