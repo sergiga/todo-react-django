@@ -11,13 +11,32 @@ export const Methods = {
   DELETE: 'DELETE'
 };
 const API_ROOT = 'http://localhost/8000/';
-const callApi = (endpoint, query, schema) => {
+const axiosInstance = axios.create({
+  validateStatus: status => { return status >= 200 && status <= 500 }
+});
+
+const callApi = (method, endpoint, query, schema) => {
   const fullUrl = (endpoint.indexOf(API_ROOT) === -1) 
     ? API_ROOT + endpoint 
     : endpoint;
+  
+  switch(method) {
+    case Methods.GET:
+      return getApi(fullUrl, query, schema);
+    case Methods.POST:
+      throw new Error('Not implemented yet');
+    case Methods.PUT:
+      throw new Error('Not implemented yet');
+    case Methods.DELETE:
+      throw new Error('Not implemented yet');
+    default:
+      throw new Error('Bad HTTP method');
+  }
+}
 
-  return axios.get(fullUrl, { params: query }, {
-    validateStatus: status => { return status >= 200 && status <= 500 }
+const getApi = (fullUrl, query, schema) => {
+  return axiosInstance.get(fullUrl, { params: query }, {
+    headers: { Authorization: sessionStorage.getItem('todo_access_token') }
   }).then(({ data }) => {
     return merge({}, normalize(data, schema));
   }); 
@@ -43,7 +62,7 @@ export default store => next => action => {
     return next(action);
   }
 
-  const { endpoint, query, types, schema } = apiCall;
+  const { method, endpoint, query, types, schema } = apiCall;
 
   if(typeof endpoint !== 'string') {
     throw new Error('Expecting the endpoint to be a string');
@@ -71,7 +90,7 @@ export default store => next => action => {
 
   next(actionWith({ type: requestType }));
 
-  return callApi(endpoint, query, schema).then(
+  return apiCall(method, endpoint, query, schema).then(
     response => next(actionWith({
       response,
       type: successType
