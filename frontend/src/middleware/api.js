@@ -44,7 +44,7 @@ const postApi = (fullUrl, data) => {
   return axiosInstance.post(fullUrl, data, {
     headers: { 'Authorization': `Token ${sessionStorage.getItem('todos_access_token')}` },
   }).then((response) => {
-    console.log(response);
+    return response.data;
   }); 
 }
 
