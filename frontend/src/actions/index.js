@@ -26,7 +26,8 @@ export const createTodo = (todo) => (dispatch) => {
     [API_MIDDLEWARE]: {
       method: Methods.POST,
       types: [ CREATE_TODO_REQUEST, CREATE_TODO_SUCCESS, CREATE_TODO_FAILURE ],
-      endpoint: 'todos/'
+      endpoint: 'todos/',
+      data: todo
     }
   });
 }
