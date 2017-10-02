@@ -52,6 +52,7 @@ export const DELETE_TODO_FAILURE = 'DELETE_TODO_FAILURE';
 
 export const deleteTodo = (todoID) => (dispatch) => {
   return dispatch({
+    id: todoID,
     [API_MIDDLEWARE]: {
       method: Methods.DELETE,
       types: [ DELETE_TODO_REQUEST, DELETE_TODO_SUCCESS, DELETE_TODO_FAILURE ],
