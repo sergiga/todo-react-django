@@ -24,7 +24,7 @@ const callApi = (method, endpoint, data, schema) => {
     case Methods.POST:
       return postApi(fullUrl, data, schema);
     case Methods.PUT:
-      throw new Error('Not implemented yet');
+      return putApi(fullUrl, data, schema);
     case Methods.DELETE:
       return deleteApi(fullUrl);
     default:
@@ -53,6 +53,19 @@ const deleteApi = (fullUrl) => {
     headers: { 'Authorization': `Token ${sessionStorage.getItem('todos_access_token')}` },
   }).then((response) => {
     if(response.status >= 400 && response.status < 500) {
+      return Promise.reject({ message: response.statusText });
+    }
+  });
+}
+
+const putApi = (fullUrl, data, schema) => {
+  return axiosInstance.put(fullUrl, data, {
+    headers: { 'Authorization': `Token ${sessionStorage.getItem('todos_access_token')}` },
+  }).then((response) => {
+    if(response.status >= 200 && response.status < 300) {
+      return merge({}, normalize(response.data, schema));
+    }
+    else if(response.status >= 400 && response.status < 500) {
       return Promise.reject({ message: response.statusText });
     }
   });
