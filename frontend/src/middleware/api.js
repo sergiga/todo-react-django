@@ -26,7 +26,7 @@ const callApi = (method, endpoint, data, schema) => {
     case Methods.PUT:
       throw new Error('Not implemented yet');
     case Methods.DELETE:
-      throw new Error('Not implemented yet');
+      return deleteApi(fullUrl);
     default:
       throw new Error('Bad HTTP method');
   }
@@ -44,7 +44,16 @@ const postApi = (fullUrl, data) => {
   return axiosInstance.post(fullUrl, data, {
     headers: { 'Authorization': `Token ${sessionStorage.getItem('todos_access_token')}` },
   }).then((response) => {
+    console.log(response);
   }); 
+}
+
+const deleteApi = (fullUrl) => {
+  return axiosInstance.delete(fullUrl, {
+    headers: { 'Authorization': `Token ${sessionStorage.getItem('todos_access_token')}` },
+  }).then((response) => {
+    console.log(response);
+  });
 }
 
 // Schemas
