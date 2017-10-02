@@ -7,6 +7,7 @@ const todos = (state = {}, action) => {
   switch(action.type) {
     case ActionTypes.TODOS_SUCCESS:
     case ActionTypes.CREATE_TODO_SUCCESS:
+    case ActionTypes.UPDATE_TODO_SUCCESS:
       if (action.response && action.response.entities && action.response.entities.todos) {
         return merge({}, state, action.response.entities.todos);
       }
