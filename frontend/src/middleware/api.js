@@ -52,7 +52,9 @@ const deleteApi = (fullUrl) => {
   return axiosInstance.delete(fullUrl, {
     headers: { 'Authorization': `Token ${sessionStorage.getItem('todos_access_token')}` },
   }).then((response) => {
-    console.log(response);
+    if(response.status >= 400 && response.status < 500) {
+      return Promise.reject({ message: response.statusText });
+    }
   });
 }
 

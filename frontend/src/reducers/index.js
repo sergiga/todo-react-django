@@ -1,5 +1,6 @@
 import * as ActionTypes from '../actions';
 import merge from 'lodash/merge';
+import omit from 'lodash/omit';
 import { combineReducers } from 'redux';
 
 const todos = (state = {}, action) => {
@@ -11,6 +12,7 @@ const todos = (state = {}, action) => {
       }
       return state;
     case ActionTypes.DELETE_TODO_SUCCESS:
+      return omit(state, [action.id])
     default:
       return state;
   }
