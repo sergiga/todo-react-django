@@ -14,7 +14,7 @@ const fetchTodos = () => ({
 });
 
 export const loadTodos = () => (dispatch) => {
-  return dispatch(fetchTodos())
+  return dispatch(fetchTodos());
 }
 
 export const CREATE_TODO_REQUEST = 'CREATE_TODO_REQUEST'; 
@@ -27,7 +27,8 @@ export const createTodo = (todo) => (dispatch) => {
       method: Methods.POST,
       types: [ CREATE_TODO_REQUEST, CREATE_TODO_SUCCESS, CREATE_TODO_FAILURE ],
       endpoint: 'todos/',
-      data: todo
+      data: todo,
+      schema: Schemas.TODO
     }
   });
 }

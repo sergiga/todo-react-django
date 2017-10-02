@@ -22,7 +22,7 @@ const callApi = (method, endpoint, data, schema) => {
     case Methods.GET:
       return getApi(fullUrl, schema);
     case Methods.POST:
-      return postApi(fullUrl, data)
+      return postApi(fullUrl, data, schema);
     case Methods.PUT:
       throw new Error('Not implemented yet');
     case Methods.DELETE:
@@ -40,11 +40,11 @@ const getApi = (fullUrl, schema) => {
   }); 
 }
 
-const postApi = (fullUrl, data) => {
+const postApi = (fullUrl, data, schema) => {
   return axiosInstance.post(fullUrl, data, {
     headers: { 'Authorization': `Token ${sessionStorage.getItem('todos_access_token')}` },
   }).then((response) => {
-    return response.data;
+    return merge({}, normalize(response.data, schema));
   }); 
 }
 
