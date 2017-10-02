@@ -4,65 +4,24 @@ import merge from 'lodash/merge';
 
 // API calls
 export const Methods = {
-  GET: 'GET',
-  POST: 'POST',
-  PUT: 'PUT',
-  DELETE: 'DELETE'
+  GET: 'get',
+  POST: 'post',
+  PUT: 'put',
+  DELETE: 'delete'
 };
 
 const axiosInstance = axios.create({
+  headers: { 'Authorization': `Token ${sessionStorage.getItem('todos_access_token')}` },
   validateStatus: status => { return status >= 200 && status <= 500 }
 });
 const API_ROOT = 'http://localhost:3000/';
 
 const callApi = (method, endpoint, data, schema) => {
-  const fullUrl = (endpoint.indexOf(API_ROOT) === -1) ? API_ROOT + endpoint : endpoint;
+  const url = (endpoint.indexOf(API_ROOT) === -1) ? API_ROOT + endpoint : endpoint;
 
-  switch(method) {
-    case Methods.GET:
-      return getApi(fullUrl, schema);
-    case Methods.POST:
-      return postApi(fullUrl, data, schema);
-    case Methods.PUT:
-      return putApi(fullUrl, data, schema);
-    case Methods.DELETE:
-      return deleteApi(fullUrl);
-    default:
-      throw new Error('Bad HTTP method');
-  }
-}
-
-const getApi = (fullUrl, schema) => {
-  return axiosInstance.get(fullUrl, {
-    headers: { 'Authorization': `Token ${sessionStorage.getItem('todos_access_token')}` },
-  }).then(({ data }) => {
-    return merge({}, normalize(data, schema));
-  }); 
-}
-
-const postApi = (fullUrl, data, schema) => {
-  return axiosInstance.post(fullUrl, data, {
-    headers: { 'Authorization': `Token ${sessionStorage.getItem('todos_access_token')}` },
-  }).then((response) => {
-    return merge({}, normalize(response.data, schema));
-  }); 
-}
-
-const deleteApi = (fullUrl) => {
-  return axiosInstance.delete(fullUrl, {
-    headers: { 'Authorization': `Token ${sessionStorage.getItem('todos_access_token')}` },
-  }).then((response) => {
-    if(response.status >= 400 && response.status < 500) {
-      return Promise.reject({ message: response.statusText });
-    }
-  });
-}
-
-const putApi = (fullUrl, data, schema) => {
-  return axiosInstance.put(fullUrl, data, {
-    headers: { 'Authorization': `Token ${sessionStorage.getItem('todos_access_token')}` },
-  }).then((response) => {
+  return axiosInstance({ method, url, data }).then((response) => {
     if(response.status >= 200 && response.status < 300) {
+      if(method === Methods.DELETE) { return null; }
       return merge({}, normalize(response.data, schema));
     }
     else if(response.status >= 400 && response.status < 500) {
