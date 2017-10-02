@@ -1,4 +1,5 @@
 import { API_MIDDLEWARE, Schemas, Methods } from '../middleware/api';
+import merge from 'lodash/merge';
 
 export const TODOS_REQUEST = 'TODO_REQUEST'; 
 export const TODOS_SUCCESS = 'TODO_SUCCESS'; 
@@ -37,12 +38,22 @@ export const UPDATE_TODO_REQUEST = 'UPDATE_TODO_REQUEST';
 export const UPDATE_TODO_SUCCESS = 'UPDATE_TODO_SUCCESS'; 
 export const UPDATE_TODO_FAILURE = 'UPDATE_TODO_FAILURE';
 
-export const updateTodo = (todoID) => (dispatch) => {
+export const updateTodo = (todoID, updatedData) => (dispatch, getState) => {
+  const todo = getState().entities.todos[todoID];
+
+  if(!todo) {
+    return null;
+  } 
+
+  const updatedTodo = merge({}, todo, updatedData);
+
   return dispatch({
     [API_MIDDLEWARE]: {
       method: Methods.PUT,
       types: [ UPDATE_TODO_REQUEST, UPDATE_TODO_SUCCESS, UPDATE_TODO_FAILURE ],
-      endpoint: `todos/${todoID}/`
+      endpoint: `todos/${todoID}/`,
+      data: updatedTodo,
+      schema: Schemas.TODO
     }
   });
 }
