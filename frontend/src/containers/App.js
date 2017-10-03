@@ -5,38 +5,81 @@ import {
   loadTodos,
   createTodo, 
   updateTodo, 
-  deleteTodo, 
+  deleteTodo,
+  login,
   setVisibilityFilter 
 } from '../actions/index';
+import LoginForm from '../components/LoginForm';
+import TodoForm from '../components/TodoForm';
+import VisibilityFilter from '../components/TodoForm';
+import List from '../components/TodoForm';
+import Todo from '../components/Todo';
 
 class App extends Component {
   static propTypes = {
-    userTodos: PropTypes.array.isRequired,
+    user: PropTypes.object,
+    todos: PropTypes.array.isRequired,
+    visibilityFilter: PropTypes.string.isRequired,
     loadTodos: PropTypes.func.isRequired,
     createTodo: PropTypes.func.isRequired, 
     updateTodo: PropTypes.func.isRequired, 
-    deleteTodo: PropTypes.func.isRequired, 
+    deleteTodo: PropTypes.func.isRequired,
+    login: PropTypes.func.isRequired,
     setVisibilityFilter: PropTypes.func.isRequired
   }
 
+  submitTodo(todo) {
+    this.props.createTodo(todo);
+  }
+
+  renderTodo() {
+    return null;
+  }
+
   render() {
-    return (
-      <div />
-    );
+    const { 
+      user,
+      todos,
+      visibilityFilter,
+      login,
+      createTodo,
+      setVisibilityFilter
+    } = this.props;
+
+    if(!user) {
+      return (
+        <div className='main-container'>
+          <LoginForm login={login}/>
+        </div>
+      );
+    }
+    else {
+      return (
+        <div className='main-container'>
+          <TodoForm submitTodo={createTodo} />
+          <List 
+            items={todos}
+            renderItem={this.renderTodo} />
+          <VisibilityFilter setVisibilityFilter={setVisibilityFilter} />
+        </div>
+      );
+    }
   }
 }
 
 const mapStateToProps = (state, ownProps) => {
   const {
     entities: { todos },
-    visibilityFilter
+    visibilityFilter,
+    user
   } = state;
   
   const userTodos = Object.values(todos);
 
   return {
-    userTodos, 
-    visibilityFilter
+    todos: userTodos, 
+    visibilityFilter,
+    user
   }
 }
 
@@ -46,7 +89,8 @@ export default connect(
     loadTodos,
     createTodo, 
     updateTodo, 
-    deleteTodo, 
+    deleteTodo,
+    login,
     setVisibilityFilter 
   }
 )(App);
