@@ -19,6 +19,16 @@ const todos = (state = {}, action) => {
   }
 }
 
+const user = (state = null, action) => {
+  switch(action.type) {
+    case ActionTypes.LOGIN_SUCCESS:
+      sessionStorage.setItem('todos_access_token', action.response.token);
+      return action.user;
+    default:
+      return state;
+  }
+}
+
 const visibilityFilter = (state = 'SHOW_ALL', action) => {
   switch(action.type) {
     case ActionTypes.SHOW_VISIBILITY_FILTER:
@@ -32,6 +42,7 @@ const reducer = combineReducers({
   entities: combineReducers({
     todos
   }),
+  user,
   visibilityFilter
 })
 

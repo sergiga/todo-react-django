@@ -1,5 +1,6 @@
 import { API_MIDDLEWARE, Schemas, Methods } from '../middleware/api';
 import merge from 'lodash/merge';
+import omit from 'lodash/omit';
 
 export const TODOS_REQUEST = 'TODO_REQUEST'; 
 export const TODOS_SUCCESS = 'TODO_SUCCESS'; 
@@ -73,10 +74,32 @@ export const deleteTodo = (todoID) => (dispatch) => {
   });
 }
 
+export const LOGIN_REQUEST = 'LOGIN_REQUEST';
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const LOGIN_FAILURE = 'LOGIN_FAILURE';
+
+export const login = userCredentials => dispatch => {
+  return dispatch({
+    user: omit(userCredentials, ['password']),
+    [API_MIDDLEWARE]: {
+      method: Methods.POST,
+      types: [ LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE ],
+      endpoint: `auth`,
+      data: userCredentials,
+    }
+  }).then(
+    response => {
+      dispatch(loadTodos());
+    },
+    error => {
+      return null;
+    });
+}
+
 export const SHOW_VISIBILITY_FILTER = 'SHOW_VISIBILITY_FILTER';
 
 export const setVisibilityFilter = (filter) => (dispatch, getState) => {
   if(getState().visibilityFilter === filter) { return null; }
 
-  return dispatch({ type: SHOW_VISIBILITY_FILTER });
+  return dispatch({ type: SHOW_VISIBILITY_FILTER, filter: filter });
 }
