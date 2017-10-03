@@ -22,6 +22,7 @@ const todos = (state = {}, action) => {
 const user = (state = null, action) => {
   switch(action.type) {
     case ActionTypes.LOGIN_SUCCESS:
+      sessionStorage.setItem('todos_access_token', action.response.token);
       return action.user;
     default:
       return state;
