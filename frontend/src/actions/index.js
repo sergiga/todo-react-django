@@ -101,5 +101,5 @@ export const SHOW_VISIBILITY_FILTER = 'SHOW_VISIBILITY_FILTER';
 export const setVisibilityFilter = (filter) => (dispatch, getState) => {
   if(getState().visibilityFilter === filter) { return null; }
 
-  return dispatch({ type: SHOW_VISIBILITY_FILTER });
+  return dispatch({ type: SHOW_VISIBILITY_FILTER, filter: filter });
 }
