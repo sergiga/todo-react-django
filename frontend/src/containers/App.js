@@ -26,12 +26,25 @@ class App extends Component {
     setVisibilityFilter: PropTypes.func.isRequired
   }
 
+  constructor(props) {
+    super(props);
+
+    this.renderTodo = this.renderTodo.bind(this);
+  }
+
   submitTodo(todo) {
     this.props.createTodo(todo);
   }
 
-  renderTodo() {
-    return null;
+  renderTodo(todo) {
+    const { updateTodo, deleteTodo } = this.props;
+
+    return (
+      <Todo 
+        {...todo}
+        updateTodo={updateTodo}
+        deleteTodo={deleteTodo} />
+    );
   }
 
   render() {
