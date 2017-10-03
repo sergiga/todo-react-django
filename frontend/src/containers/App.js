@@ -47,6 +47,17 @@ class App extends Component {
     );
   }
 
+  filterTodos(todos, filter) {
+    switch(filter) {
+      case 'SHOW_ACTIVE':
+        return todos.filter(t => !t.completed); 
+      case 'SHOW_COMPLETED':
+        return todos.filter(t => t.completed);
+      default:
+        return todos;
+    }
+  }
+
   render() {
     const { 
       user,
@@ -56,6 +67,8 @@ class App extends Component {
       createTodo,
       setVisibilityFilter
     } = this.props;
+
+    const filteredTodos = this.filterTodos(todos, visibilityFilter);
 
     if(!user) {
       return (
@@ -69,7 +82,7 @@ class App extends Component {
         <div className='main-container'>
           <TodoForm submitTodo={createTodo} />
           <List 
-            items={todos}
+            items={filteredTodos}
             renderItem={this.renderTodo} />
           <VisibilityFilter setVisibilityFilter={setVisibilityFilter} />
         </div>
