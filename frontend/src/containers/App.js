@@ -11,8 +11,8 @@ import {
 } from '../actions/index';
 import LoginForm from '../components/LoginForm';
 import TodoForm from '../components/TodoForm';
-import VisibilityFilter from '../components/TodoForm';
-import List from '../components/TodoForm';
+import VisibilityFilter from '../components/VisibilityFilter';
+import List from '../components/List';
 import Todo from '../components/Todo';
 
 class App extends Component {
