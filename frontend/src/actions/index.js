@@ -87,7 +87,13 @@ export const login = userCredentials => dispatch => {
       endpoint: `auth`,
       data: userCredentials,
     }
-  })
+  }).then(
+    response => {
+      dispatch(loadTodos());
+    },
+    error => {
+      return null;
+    });
 }
 
 export const SHOW_VISIBILITY_FILTER = 'SHOW_VISIBILITY_FILTER';

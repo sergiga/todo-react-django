@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { 
-  loadTodos,
+import {
   createTodo, 
   updateTodo, 
   deleteTodo,
@@ -20,7 +19,6 @@ class App extends Component {
     user: PropTypes.object,
     todos: PropTypes.array.isRequired,
     visibilityFilter: PropTypes.string.isRequired,
-    loadTodos: PropTypes.func.isRequired,
     createTodo: PropTypes.func.isRequired, 
     updateTodo: PropTypes.func.isRequired, 
     deleteTodo: PropTypes.func.isRequired,
@@ -86,7 +84,6 @@ const mapStateToProps = (state, ownProps) => {
 export default connect(
   mapStateToProps,
   {
-    loadTodos,
     createTodo, 
     updateTodo, 
     deleteTodo,
