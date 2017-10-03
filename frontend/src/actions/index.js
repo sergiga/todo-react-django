@@ -84,7 +84,8 @@ export const login = userCredentials => dispatch => {
     [API_MIDDLEWARE]: {
       method: Methods.POST,
       types: [ LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE ],
-      endpoint: `auth`
+      endpoint: `auth`,
+      data: userCredentials,
     }
   })
 }
