@@ -73,6 +73,21 @@ export const deleteTodo = (todoID) => (dispatch) => {
   });
 }
 
+export const LOGIN_REQUEST = 'LOGIN_REQUEST';
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const LOGIN_FAILURE = 'LOGIN_FAILURE';
+
+export const login = userCredentials => dispatch => {
+  return dispatch({
+    user: omit(userCredentials, ['password']),
+    [API_MIDDLEWARE]: {
+      method: Methods.POST,
+      types: [ LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE ],
+      endpoint: `auth`
+    }
+  })
+}
+
 export const SHOW_VISIBILITY_FILTER = 'SHOW_VISIBILITY_FILTER';
 
 export const setVisibilityFilter = (filter) => (dispatch, getState) => {
