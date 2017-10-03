@@ -11,17 +11,21 @@ export const Methods = {
 };
 
 const axiosInstance = axios.create({
-  headers: { 'Authorization': `Token ${sessionStorage.getItem('todos_access_token')}` },
   validateStatus: status => { return status >= 200 && status <= 500 }
 });
 const API_ROOT = 'http://localhost:3000/';
+const AUTH_ENDPOINT = 'auth';
 
 const callApi = (method, endpoint, data, schema) => {
   const url = (endpoint.indexOf(API_ROOT) === -1) ? API_ROOT + endpoint : endpoint;
+  const headers = (endpoint.indexOf(AUTH_ENDPOINT) === -1) 
+    ? { 'Authorization': `Token ${sessionStorage.getItem('todos_access_token')}` }
+    : null;
 
-  return axiosInstance({ method, url, data }).then((response) => {
+  return axiosInstance({ method, url, data, headers }).then((response) => {
     if(response.status >= 200 && response.status < 300) {
       if(method === Methods.DELETE) { return null; }
+      if(!schema) { return response.data; }
       return merge({}, normalize(response.data, schema));
     }
     else if(response.status >= 400 && response.status < 500) {
