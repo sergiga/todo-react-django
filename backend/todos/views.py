@@ -13,7 +13,8 @@ class TodoList(APIView):
                         IsOwner)
 
   def get(self, request, format=None):
-    todos = Todo.objects.all()
+    user = request.user
+    todos = Todo.objects.filter(owner=user)
     serializer = TodoSerializer(todos, many=True)
     return Response(serializer.data)
 
